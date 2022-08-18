@@ -1,0 +1,5 @@
+dentro do laço da jogada eu preciso colocar:
+  a interação do jogador com a jogada
+  o resultado da jogada
+  o score da jogada
+  se deseja jogar mais ou passar a vez

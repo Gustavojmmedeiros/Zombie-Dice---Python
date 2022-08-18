@@ -1,0 +1,13 @@
+dizer numero de jogadores
+
+qual o jogador da vez
+
+jogada
+
+pegar 3 dados
+
+rolar dados
+
+resultados
+
+se 

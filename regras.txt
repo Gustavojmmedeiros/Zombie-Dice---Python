@@ -1,0 +1,37 @@
+13 dados
+Dados de 6 faces
+3 tipos de dados:
+  •	Verde
+  •	Vermelho
+  •	Amarelo
+
+Faces dos dados:
+  •	Tiro
+  •	Cérebro
+  •	Passo
+
+Vermelho: mais faces de tiro
+Verde: mais faces de cérebro
+Amarelo: mesma quantidade de tiros, cérebros e passos
+
+OBJETIVO: comer 13 cérebros (marcar 13 pontos de cérebro).
+
+Jogada:
+    Escolher 3 dados (aleatoriamente)
+    Resultado dos dados:
+      •	Cérebro: come o cérebro da vítima;
+      •	Tiro: vítima revida, separar os dados de tiro à direita;
+      •	Passos: vítima foge, manter dados de passos à frente – caso escolher rolar dados novamente, rolar dados de passos novamente com novos dados para serem 3
+
+    Se levar 3 tiros – 3 dados de Tiro estiverem virados pra cima – seu turno acaba (morreu).
+
+    Se não, escolher parar e marcar pontos – contar cérebros – ou continuar.
+
+    Se continuar, não devolver dados. Manter dado de Passos em mãos e pegar mais 2 dados aleatórios.
+
+    Rolar 3 dados e seguir esse fluxo até levar 3 tiros – e não marcar pontos – ou parar antes e marcar os pontos feitos até o momento. 
+
+    Jogar até alguém marcar 13 pontos – comer 13 cérebros –, mas deixar a rodada terminar para todos jogarem a mesma quantidade de turnos.
+     
+    Mesmo no caso de alguém ter marcado 13 pontos, se ao final do turno alguém tiver marcado mais, este é o vencedor.
+
