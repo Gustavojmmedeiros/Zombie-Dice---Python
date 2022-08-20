@@ -36,8 +36,15 @@ cerebros = 0
 tiros = 0
 passos = 0 
 
+
 print(f'Turno de {jogadores[jogadorAtual]}')
-jogar = str(input('Rolar dados? [S/N] '))
+
+jogar = str(input('Rolar dados? [S/N] ')).strip()[0]
+
+while jogar not in 'Ss':
+  jogar = str(input('Rolar dados? [S/N] ')).strip()[0]
+  if jogar in 'Nn':
+    break
 
 for i in range(1, 4):
   numSorteado = randint(0, 12)
@@ -49,70 +56,32 @@ for i in range(1, 4):
   elif dado == dadoVermelho:
     corDado = 'Vermelho'
   
-  dadosSorteados.append(dado)
-
-  print(f'{i}º dado {corDado}.')
+  dadosSorteados.append(corDado)
 
 dado1 = dadosSorteados[0]
 dado2 = dadosSorteados[1]
 dado3 = dadosSorteados[2]
 
+if dado1 == dado2 == dado3:
+  print(f'3 dados {dado1}s.')
+if dado1 == dado2 != dado3:
+  print(f'2 dados {dado1}s e 1 dado {dado3}.')
+if dado1 != dado2 == dado3:
+  print(f'1 dado {dado1} e 2 dados {dado2}s.')
+if dado1 != dado2 != dado3:
+  print(f'1 dado {dado1}, 1 dado {dado2} e 1 dado {dado3}.')
+
 print(dado1, dado2, dado3)
-for i in range(0, 3):
-  faceSorteada = randint(1, 7)
+
+for jogada in range(3):
+  faceSorteada = randint(0, 6)
 
   if dado[faceSorteada] == 'C':
-    print('Você devorou um cérebro.')
     cerebros += 1
   elif dado[faceSorteada] == 'T':
-    print('Você tomou um tiro.')
     tiros += 1
   elif dado[faceSorteada] == 'P':
-    print('Uma vítima escapou.')
     passos += 1
 
-print(cerebros, tiros, passos)
+print(f'Seu score atual é: {cerebros} cérebros, {tiros} tiros e {passos} vítimas que fugiram.')
 
-
-
-
-# while True:
-
-#   for i in range(quantidadeJogadores):
-#     numSorteado = randint(0, 12)
-#     dadoSorteado = listaDados[numSorteado]
-
-#     if dadoSorteado == dadoVerde:
-#       corDado = 'Verde'
-#     elif dadoSorteado == dadoAmarelo:
-#       corDado = 'Amarelo'
-#     elif dadoSorteado == dadoVermelho:
-#       corDado = 'Vermelho'
-    
-#   dadosSorteados.append(dadoSorteado)
-  
-
-#   break
-  
-# print(dadosSorteados)
-
-#     print(f'O dado sorteado foi {corDado}.')
-
-
-#   for dadoSorteado in dadosSorteados:
-
-#     faceSorteada = randint(0, 5)
-
-#     if dadoSorteado[faceSorteada] == 'C':
-#       print('Você comeu um cérebro.')
-#       cerebros += 1
-#     elif dadoSorteado[faceSorteada] == 'T':
-#       print('Você tomou um tiro.')
-#       tiros += 1
-#     elif dadoSorteado[faceSorteada] == 'P':
-#       print('Você deixou uma vítima escapar.')
-#       passos += 1
-
-#   break
-
-# print(f'Seu score atual é: {cerebros} cerebros, {tiros} tiros, {passos} vítimas que fugiram.')
