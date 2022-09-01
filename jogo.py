@@ -1,17 +1,19 @@
 # Linha de importação do módulo random 
 from random import randint 
 
-print('Prontos para jogar Zombie Dice?\n')
+print('Prontos para jogar Zombie Dice?')
+print()
 
-print('Para iniciar, diga a quantidade de jogadores para a partida.\n')
+print('Para iniciar, diga a quantidade de jogadores para a partida.')
+print()
 
 # Bloco de verificação da quantidade mínima e máxima de jogadores
-quantidadeJogadores = int(input('Número de jogadores: [2/3/4/5/6]\n'))
-
-while quantidadeJogadores < 2 or quantidadeJogadores > 6:
-  print('O jogo permite no mínimo 2 e no máximo 6 jogadores.')
-
-  quantidadeJogadores = int(input('Número de jogadores: [2/3/4/5/6]\n'))
+while True:  
+  quantidadeJogadores = int(input('Número de jogadores: '))
+  print()
+  if quantidadeJogadores >= 2:
+    break
+  print('O jogo permite no mínimo 2 jogadores.')
 
 print(f'{quantidadeJogadores} jogadores selecionados.\n')
 
@@ -22,12 +24,12 @@ for nomes in range(quantidadeJogadores):
   nomeJogador = str(input('Nome do jogador: '))
   jogadores.append(nomeJogador)
 
-# TIpos dos dados seguido da lista com estes
+# Tipos dos dados seguido da lista com estes
 dadoVerde = 'CPCTPC'
 dadoAmarelo = 'TPCTPC'
 dadoVermelho = 'TPTCPT'
 
-listaDados = [
+tuboDados = [
   dadoVerde, dadoVerde, dadoVerde, dadoVerde, dadoVerde, dadoVerde,
   dadoAmarelo, dadoAmarelo, dadoAmarelo, dadoAmarelo,
   dadoVermelho, dadoVermelho, dadoVermelho
@@ -42,6 +44,9 @@ passos = 0
 
 # Início do laço que permite o jogador continuar rolando os dados até tomar 3 tiros
 while True:
+  print(f'Turno de {jogadores[jogadorAtual]}')
+  print()
+
   if tiros <= 3:
     jogar = str(input('Rolar dados? [S/N] ')).strip()[0]
 
@@ -50,15 +55,14 @@ while True:
       break
 
     else:  
-      print(f'Turno de {jogadores[jogadorAtual]}') 
-
       while jogar not in 'Ss':
         jogar = str(input('Rolar dados? [S/N] ')).strip()[0]
+        print()
 
 # Laço que sorteia um dado e o adiciona à lista dadosSorteados
       for i in range(1, 4):
         numSorteado = randint(0, 12)
-        dado = listaDados[numSorteado]
+        dado = tuboDados[numSorteado]
         if dado == dadoVerde:
           corDado = 'Verde'
         elif dado == dadoAmarelo:
@@ -82,8 +86,6 @@ while True:
       if dado1 != dado2 != dado3:
         print(f'1 dado {dado1}, 1 dado {dado2} e 1 dado {dado3}.')
 
-      print(dado1, dado2, dado3)
-
 # Laço que sorteia a face sorteada do dado e qual o seu resultado
       for jogada in range(3):
         faceSorteada = randint(0, 6)
@@ -96,6 +98,7 @@ while True:
           passos += 1
 
       print(f'Resultado da jogada: {cerebros} cérebros, {tiros} tiros e {passos} vítimas que fugiram.')
+      print()
 
 # Opção caso o jogador tome 3 tiros, o que encerra a sua jogada e elimina seus pontos conquistados nela
   else:
