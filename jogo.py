@@ -1,5 +1,5 @@
 # Linha de importação do módulo random 
-from random import randint 
+from random import randint
 
 print('Prontos para jogar Zombie Dice?')
 print()
