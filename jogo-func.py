@@ -1,121 +1,139 @@
+from operator import index, truediv
 from random import random, randint, shuffle
 
-jogadores = []
-jogador = {'nome': '', 'index': 0, 'cerebros': 0, 'tiros': 0, 'passos': 0}
 
-# for i in range(3):
-#   jogador['nome'] = str(input(f'Nome do jogador {i + 1}: '))
-#   jogador['index'] = i + 1
-#   jogador['cerebros'] = 0
-#   jogador['tiros'] = 0
-#   jogador['passos'] = 0
-#   jogadores.append(jogador.copy())
-
-for i in range(3):
-  jogador['nome'] = str(input(f'Nome do jogador {i + 1}: '))
-  jogador['index'] = i + 1
-  jogadores.append(jogador.copy())
-
-# Jogada
-shuffle(jogadores)
-jogador1 = jogadores[0]
-jogador2 = jogadores[1]
-jogador3 = jogadores[2]
-print(jogadores)
-
-cerebros = 0
-tiros = 0
-passos = 0
-dadosSorteados = []
-jogadorAtual = ''
-
-dadoVerde = 'CPCTPC'
-dadoAmarelo = 'TPCTPC'
-dadoVermelho = 'TPTCPT'
-
-tuboDados = [
-  dadoVerde, dadoVerde, dadoVerde, dadoVerde, dadoVerde, dadoVerde,
-  dadoAmarelo, dadoAmarelo, dadoAmarelo, dadoAmarelo,
-  dadoVermelho, dadoVermelho, dadoVermelho
-]
+def mostrar_score(jogadores, jogador):
+  for jogador in jogadores:
+    print(f'{jogador["nome"]}: {jogador["cerebros"]} cérebros, {jogador["tiros"]} tiros')
 
 
-
-def pegarDados(tuboDados):
-  jogadorAtual = jogador1
-  print(jogador1['nome'])
-
-  for i in range(1, 4):
-    numSorteado = randint(0, 12)
-    global dado
-    dado = tuboDados[numSorteado]
-    if dado == dadoVerde:
-      corDado = 'Verde'
-    elif dado == dadoAmarelo:
-      corDado = 'Amarelo'
-    elif dado == dadoVermelho:
-      corDado = 'Vermelho'
+# Função que recebe o número de jogadores e os adiciona à lista jogadores
+def guardar_nome_jogador(numero_jogadores):
+  for i in range(numero_jogadores):
+    jogador['nome'] = str(input(f'Nome do jogador {i + 1}: '))
+    jogador['index'] = i + 1
+    jogadores.append(jogador.copy())
     
-    dadosSorteados.append(corDado)
-    del tuboDados[numSorteado]
+  return jogadores
 
 
-  global dado1 
-  dado1 = dadosSorteados[0]
-  global dado2
-  dado2 = dadosSorteados[1]
-  global dado3
-  dado3 = dadosSorteados[2]
+# Função que cria e imprime a ordem de jogo
+def ordem_jogo(jogadores):
+  shuffle(jogadores)
 
-  if dado1 == dado2 == dado3:
-    print(f'3 dados {dado1}s.')
-  if dado1 == dado2 != dado3:
-    print(f'2 dados {dado1}s e 1 dado {dado3}.')
-  if dado1 != dado2 == dado3:
-    print(f'1 dado {dado1} e 2 dados {dado2}s.')
-  if dado1 != dado2 != dado3:
-    print(f'1 dado {dado1}, 1 dado {dado2} e 1 dado {dado3}.')
+  ordem = []
+  print(f'A ordem de jogadas é: ')
+  
+  for jogador in jogadores:
+    ordem.append(jogador['nome'])
 
-  return dado1, dado2, dado3
+  for c in range(len(ordem)):
+    print(f'{c + 1}º: {ordem[c]}')
+
+
+# Função que sorteia e adiciona os dados à lista dos dados sorteados 
+def pegar_dados():
+  dado_verde = 'CPCTPC'
+  dado_amarelo = 'TPCTPC'
+  dado_vermelho = 'TPTCPT'
+
+  tubo_dados = [
+    dado_verde, dado_verde, dado_verde, dado_verde, dado_verde, dado_verde,
+    dado_amarelo, dado_amarelo, dado_amarelo, dado_amarelo,
+    dado_vermelho, dado_vermelho, dado_vermelho
+  ]
+
+  dados_sorteados = []
+
+  for i in range(3):
+    num_sorteado = randint(0, len(tubo_dados))
+    dado = tubo_dados[num_sorteado]
+    if dado == dado_verde:
+      cor_dado = 'Verde'
+    elif dado == dado_amarelo:
+      cor_dado = 'Amarelo'
+    elif dado == dado_vermelho:
+      cor_dado = 'Vermelho'
     
+    dados_sorteados.append(cor_dado)
+    del tubo_dados[num_sorteado]
+  
+  return dados_sorteados, dado
 
 
-def mostrarDadosTubo(dado1, dado2, dado3):
-  return tuboDados
+def rolar_dados(dados_sorteados, dado):
+  cerebros = 0
+  tiros = 0
+  passos = 0
 
-
-
-def lancarDados():
   for jogada in range(3):
-    faceSorteada = randint(0, 6)
+    face_sorteada = randint(0, 5)
+    if dado[face_sorteada] == 'C':
+      cerebros += 1
+      # jogador['cerebros'] = cerebros
+    elif dado[face_sorteada] == 'T':
+      tiros += 1
+      # jogador['tiros'] = tiros
+    elif dado[face_sorteada] == 'P':
+      passos += 1
+      # jogador['passos'] = passos
 
-  if dado[faceSorteada] == 'C':
-    cerebros += 1
-    # jogador['cerebros'] = cerebros
-  elif dado[faceSorteada] == 'T':
-    tiros += 1
-    # jogador['tiros'] = tiros
-  elif dado[faceSorteada] == 'P':
-    passos += 1
-    # jogador['passos'] = passos
-
-
-
-def mostrarDadosSelecionados():
-  print(dado1, dado2, dado3)
+  return cerebros
+  
 
 
+def jogada():
+  print('*** OPÇÕES ***')
+  print('1. Mostrar score')
+  print('2. Pegar dados')
+  print('3. Passar o turno')
+  op = int(input('Escolha um das ações: '))
+  if 1 <= op <= 3:
+    return op
+  else:
+    print('Ação inválida.')
 
-def comecarTurno(tuboDados):
-  pass
 
-def passarTurno():
- pass
+def inicio_jogo(jogadores: dict): 
+  print('Vamos jogar Zombie Dice!\n')
+  numero_jogadores = int(input('Quantos jogadores? '))
+  guardar_nome_jogador(numero_jogadores)
+  ordem_jogo(jogadores)
+  
+
+  while True:
+    op = jogada()
+    if op == 1:
+      mostrar_score(jogadores, jogador)
+    if op == 2:
+      copo, dado = pegar_dados()
+      x1, x2 = rolar_dados(copo, dado)
+    if op == 3:
+      pass
+    else:
+      break
+
+  # score = {'cerebros': 0, 'tiros': 0}
+  # dadosSorteados = []
+  # jogadorAtual = ''
 
 
-def checarScore():
-  pass
+  # jogar = True
+  # while jogar:
+  #   turno = True
+
+  #   while turno:
+  #     jogadorAtual = jogadores[0]['nome']
+  #     print(f'Turno de {jogadorAtual}')
 
 
+  #     continuarTurno = str(input('Deseja continuar jogando? [S/N] '))
+  #     if continuarTurno in 'Nn':
+  #       jogar = False
+  #       # checarScore()
+  #       trocarTurno(continuarTurno)
 
-pegarDados(tuboDados)
+if __name__ == '__main__':
+  jogadores = []
+  jogador = {'nome': '', 'index': 0, 'cerebros': 0, 'tiros': 0, 'passos': 0}
+  inicio_jogo(jogadores)
