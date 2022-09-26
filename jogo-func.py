@@ -1,5 +1,6 @@
-from random import random, randint, shuffle
-from collections import Counter
+from random import randint, shuffle
+from time import sleep
+
 # Função que recebe o número de jogadores e os adiciona à lista jogadores
 def guardar_nome_jogador(numero_jogadores):
   for i in range(numero_jogadores):
@@ -50,7 +51,7 @@ def criar_tubo_dados(tubo):
 # Função que sorteia e adiciona os dados à lista dos dados sorteados 
 def pegar_dados(copo):  
   if len(copo) == 0:
-    print('Copo vazio')
+    print('Copo vazio. Selecionando 3 dados...')
     
     for i in range(3):
       tamanho_tubo = len(tubo) - 1
@@ -80,20 +81,21 @@ def pegar_dados(copo):
 
         
 def mostrar_dados_copo(copo):
-  print('Dados sorteados: ', end='')
+  print('\nDados sorteados: ', end='')
   for dado in copo:
     if dado == ("C", "P", "C", "T", "P", "C"):
       dado = 'Verde'
-      print('verde')
+      print('verde', end=' ')
       # print('\033[1;32m verde\033[m', end=' ')
     elif dado == ("T", "P", "C", "T", "P", "C"):
       dado = 'Amarelo'
-      print('amarelo')
+      print('amarelo', end=' ')
       # print('\033[1;33m amarelo\033[m', end=' ')
     elif dado == ("T", "P", "T", "C", "P", "T"):
       dado = 'Vermelho'
-      print('vermelho')
+      print('vermelho', end=' ')
       # print('\033[1;31m vermelho\033[m', end=' ')
+  print()
 
 
 def rolar_dados(copo):
@@ -111,7 +113,7 @@ def rolar_dados(copo):
       elif dado[face_sorteada] == 'P':
         passos += 1
         print('Vítima fugiu!', end=' ')
-  # print(f'{cerebros} cérebros, {tiros} tiros e {passos} passos')
+
   return cerebros, tiros, passos
   
 
@@ -124,9 +126,20 @@ def zerar_pontuacao(jogador_atual, contador_cerebros):
   c, t, p = 0, 0, 0
   jogadores[jogador_atual]['tiros'] = 0
   jogadores[jogador_atual]['passos'] = 0
-  print('Você tomou 3 tiros! Perca sua jogada e todos os pontos feitos nela.')
+  if jogadores[jogador_atual]['tiros'] >= 3:
+    print('Você tomou 3 tiros! Perca sua jogada e todos os pontos feitos nela.')
   print(f'{contador_cerebros} cerebros nesta jogada')
     
+  
+def checar_vitoria(jogador_atual):
+  if jogadores[jogador_atual]['cerebros'] >= 3:
+    return True
+
+
+def checar_derrota(jogador_atual):
+  if jogadores[jogador_atual]['tiros'] >= 3:
+    return True
+
 
 def passar_turno(jogador_atual):
   jogador_atual += 1
@@ -141,12 +154,18 @@ def jogar():
   print('1. Mostrar score')
   print('2. Rolar dados')
   print('3. Passar turno')
-  
-  op = int(input('Escolha uma das ações: \n'))
-  if 1 <= op <= 3:
-    return op
-  else:
-    print('Ação inválida.')
+  print('4. Sair')
+
+  sair = False
+  while not sair:
+    op = int(input('Escolha uma das ações: \n'))
+    if 1 <= op < 4:
+      return op
+    elif op == 4:
+      print('Até a próxima!')
+      sair = True
+    else:
+      print('Ação inválida.')
 
 
 # jogada
@@ -158,10 +177,12 @@ copo = []
 
 print('Vamos jogar Zombie Dice!\n')
 numero_jogadores = int(input('Quantos jogadores? '))
+sleep(0.5)
 guardar_nome_jogador(numero_jogadores)
 jogador_atual = 0
 
 print(f'\nA ordem de jogadas é: ')
+sleep(0.5)
 ordem_jogadas = ordem_jogo(jogadores)
 criar_tubo_dados(tubo)
 
@@ -169,6 +190,7 @@ for c in range(len(ordem_jogadas)):
   print(f'{c + 1}º: {ordem_jogadas[c]}')
 
 contador_cerebros = 0
+contador_passos = 0
 turno = True
 
 while (turno):
@@ -176,32 +198,38 @@ while (turno):
 
   op = jogar()
   if op == 1:
+    sleep(0.8)
     mostrar_score(jogadores, jogador)
 
   elif op == 2:
+    sleep(0.8)
     pegar_dados(copo)
     mostrar_dados_copo(copo)
     
     c, t, p = rolar_dados(copo)
     contador_cerebros += c
+    contador_passos += p
+
     jogadores[jogador_atual]['cerebros'] += c
     jogadores[jogador_atual]['tiros'] += t
     jogadores[jogador_atual]['passos'] += p
     print(f'\n{c} cérebros, {t} tiros e {p} vítimas escaparam.')
-    print(f'{contador_cerebros} cerebros nesta jogada')
-    # print(f'\n{jogadores[jogador_atual]["cerebros"]} cérebros, {jogadores[jogador_atual]["tiros"]} tiros e {jogadores[jogador_atual]["tiros"]} vítimas fugiram.')
 
-    if jogadores[jogador_atual]['tiros'] < 3:
-      pass
-    else:
+    if checar_derrota(jogador_atual):
+      print('proximo jogador')
       zerar_pontuacao(jogador_atual, contador_cerebros)
       jogadores[jogador_atual]['cerebros'] -= contador_cerebros
       contador_cerebros = 0
       turno = False
       jogador_atual = passar_turno(jogador_atual)
       turno = True
+    elif checar_vitoria(jogador_atual):
+      sleep(0.8)
+      print(f'{jogadores[jogador_atual]["nome"]} venceu! Parabéns')
+      break  
 
   elif op == 3:
+    sleep(0.8)
     continuar_jogada = input('Continuar ou passar turno? [S - continuar turno /N - passar jogada] ')
     if continuar_jogada == "s" or continuar_jogada == "sim":
       pass
@@ -212,6 +240,6 @@ while (turno):
       jogador_atual = passar_turno(jogador_atual)
       turno = True
     pass
+
   else:
-    break
-  
+    break  
