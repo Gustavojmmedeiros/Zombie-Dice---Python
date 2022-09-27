@@ -22,19 +22,20 @@ def ordem_jogo(jogadores):
   
   return ordem
 
-
+# Função que retorna os dados verdes
 def pegar_dados_verdes():
   return ("C", "P", "C", "T", "P", "C")
 
-
+# Função que retorna os dados amarelos
 def pegar_dados_amarelos():
   return ("T", "P", "C", "T", "P", "C")
 
-
+# Função que retorna os dados vermelhos
 def pegar_dados_vermelhos():
   return ("T", "P", "T", "C", "P", "T")
   
 
+# Função que cria o tubo
 def criar_tubo_dados(tubo):
   for d in range(6):
     tubo.append(pegar_dados_verdes())
@@ -79,7 +80,8 @@ def pegar_dados(copo):
 
   return copo
 
-        
+
+# Função que mostra os dados do copo
 def mostrar_dados_copo(copo):
   print('\nDados sorteados: ', end='')
   for dado in copo:
@@ -96,8 +98,10 @@ def mostrar_dados_copo(copo):
       print('vermelho', end=' ')
       # print('\033[1;31m vermelho\033[m', end=' ')
   print()
+  return copo
 
 
+# Função que rola os dados 
 def rolar_dados(copo):
   print()
   cerebros = tiros = passos = 0
@@ -117,11 +121,13 @@ def rolar_dados(copo):
   return cerebros, tiros, passos
   
 
+# Função que mostra a pontuação do momento
 def mostrar_score(jogadores, jogador):
   for jogador in jogadores:
     print(f'{jogador["nome"]}: {jogador["cerebros"]} cérebros, {jogador["tiros"]} tiros')
 
 
+# Função que zera a cérebros, tiros e passos
 def zerar_pontuacao(jogador_atual, contador_cerebros):
   c, t, p = 0, 0, 0
   jogadores[jogador_atual]['tiros'] = 0
@@ -130,17 +136,20 @@ def zerar_pontuacao(jogador_atual, contador_cerebros):
     print('Você tomou 3 tiros! Perca sua jogada e todos os pontos feitos nela.')
   print(f'{contador_cerebros} cerebros nesta jogada')
     
-  
+
+# Função que checa jogador vitorioso
 def checar_vitoria(jogador_atual):
-  if jogadores[jogador_atual]['cerebros'] >= 3:
+  if jogadores[jogador_atual]['cerebros'] >= 13:
     return True
 
 
+# Função que checa perda da rodada
 def checar_derrota(jogador_atual):
   if jogadores[jogador_atual]['tiros'] >= 3:
     return True
 
 
+# Função que troca o jogador
 def passar_turno(jogador_atual):
   jogador_atual += 1
   if jogador_atual >= numero_jogadores:
@@ -148,6 +157,7 @@ def passar_turno(jogador_atual):
   return jogador_atual
 
 
+# Função que inicia menu do jogo
 def jogar():
   print()
   print('*** OPÇÕES ***')
